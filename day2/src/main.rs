@@ -1,18 +1,24 @@
 fn main() {
     use std::time::Instant;
+    let total_timer = Instant::now();
 
     let input = include_str!("input.txt");
     let parsed_input = parse_input(String::from(input));
 
     let now = Instant::now();
 
+    println!("\n=================");
     println!("Part1: {}", part1(&parsed_input));
     println!("Elapsed: {:.2?}", now.elapsed());
+    println!("=================");
 
     let now = Instant::now();
 
     println!("Part2: {}", part2(&parsed_input));
     println!("Elapsed: {:.2?}", now.elapsed());
+    println!("=================\n");
+
+    println!("Total Elapsed: {:.2?}\n", total_timer.elapsed());
 }
 
 fn part1(input: &Vec<Vec<u32>>) -> String {
