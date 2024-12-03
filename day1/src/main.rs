@@ -33,13 +33,18 @@ fn part2(input: String) -> String {
     let mut score: Vec<u32> = Vec::new();
 
     for &value in left.iter() {
-        let times = right.iter()
+        let times = right
+            .iter()
             .filter(|&&x| x == value)
             .count() as u32;
+
         score.push(value * times);
     }
 
-    score.iter().sum::<u32>().to_string()
+    score
+        .iter()
+        .sum::<u32>()
+        .to_string()
 }
 
 fn parse_input(input: String) -> (Vec<u32>, Vec<u32>) {
@@ -60,6 +65,16 @@ fn parse_input(input: String) -> (Vec<u32>, Vec<u32>) {
 mod tests {
     use super::*;
     
+    #[test]
+    fn test_parse_input() {
+        let input = include_str!("sample-input.txt").to_string();
+        assert_eq!(parse_input(input), 
+            (
+                vec![3, 4, 2, 1, 3, 3],
+                vec![4, 3, 5, 3, 9, 3]
+            ));
+    }
+
     #[test]
     fn test_part1() {
         let input = include_str!("sample-input.txt");
