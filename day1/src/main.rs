@@ -2,15 +2,21 @@ fn main() {
     let input = include_str!("input.txt");
     
     use std::time::Instant;
+    let total_timer = Instant::now();
     let now = Instant::now();
     
+    println!("\n=================");
     println!("Part 1: {}", part1(input.to_string()));
     println!("Elapsed: {:.2?}", now.elapsed());
+    println!("=================");
     
     let now = Instant::now();
     
     println!("Part 2: {}", part2(input.to_string()));
     println!("Elapsed: {:.2?}", now.elapsed());
+    println!("=================");
+
+    println!("\nTotal Elapsed: {:.2?}\n", total_timer.elapsed());
 }
 
 fn part1(input: String) -> String {
