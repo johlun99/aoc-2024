@@ -8,10 +8,12 @@ fn main() {
     let parsed_input = parse_input(&input);
     let conditional_input = parse_conditional(&input);
 
+    println!("\n===================");
     println!("Part 1: {}", calculate(parsed_input));
     println!("Part 2: {}", calculate(conditional_input));
-
+    println!("===================");
     println!("Elapsed: {:.2?}", now.elapsed());
+    println!("===================\n");
 }
 
 fn calculate(input: Vec<(i32, i32)>) -> String {
