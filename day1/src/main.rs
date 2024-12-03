@@ -31,12 +31,14 @@ fn part1(input: String) -> String {
 fn part2(input: String) -> String {
     let (left, right) = parse_input(input);
     let mut score: Vec<u32> = Vec::new();
-    
+
     for &value in left.iter() {
-        let times = right.iter().filter(|&&x| x == value).count() as u32;
+        let times = right.iter()
+            .filter(|&&x| x == value)
+            .count() as u32;
         score.push(value * times);
     }
-    
+
     score.iter().sum::<u32>().to_string()
 }
 
