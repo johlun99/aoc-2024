@@ -1,30 +1,37 @@
 use std::{char, usize};
 
 fn main() {
+    use std::time::Instant;
+    let now = Instant::now();
+
     let input = include_str!("input.txt");
     let parsed_input = parse_input(input);
 
-    // 2569 to low (but correct for someone else)
-    println!("Part 1: {}", part1(&parsed_input));
+    let (part1, part2) = solve(&parsed_input);
+
+    println!("\nDay 4");
+    println!("===================");
+    println!("Part 1: {}", part1);
+    println!("Part 2: {}", part2);
+    println!("===================");
+    println!("Elapsed: {:.2?}", now.elapsed());
+    println!("===================\n");
 }
 
-fn part1(input: &[Vec<char>]) -> String {
-    let mut count_x_mas: u64 = 0;
-    let mut count_x_mas2: u64 = 0;
+fn solve(input: &[Vec<char>]) -> (u32, u32) {
+    let mut part1: u32 = 0;
+    let mut part2: u32 = 0;
     for y in 0..input.len() {
         for x in 0..input[y].len() {
             if input[y][x] == 'X' {
-                count_x_mas += check_for_xmas(input, x, y) as u64;
+                part1 += check_for_xmas(input, x, y) as u32;
             } else if input[y][x] == 'A' {
-                count_x_mas2 += if check_for_x_mas(input, x, y) { 1 } else { 0 };
+                part2 += if check_for_x_mas(input, x, y) { 1 } else { 0 };
             }
         }
     }
-    println!("Part 2: {}", count_x_mas2);
 
-    println!("height: {} width: {}", input.len(), input[0].len());
-
-    count_x_mas.to_string()
+    (part1, part2)
 }
 
 fn check_for_xmas(input: &[Vec<char>], x: usize, y: usize) -> usize {
@@ -150,7 +157,7 @@ mod tests {
         let input = include_str!("sample-input.txt");
         let parsed_input = parse_input(&input);
 
-        assert_eq!(part1(&parsed_input), String::from("18"));
+        assert_eq!(solve(&parsed_input).0, 18);
     }
 
     #[test]
@@ -158,6 +165,22 @@ mod tests {
         let input = include_str!("sample-input-2.txt");
         let parsed_input = parse_input(&input);
 
-        assert_eq!(part1(&parsed_input), String::from("4"));
+        assert_eq!(solve(&parsed_input).0, 4);
+    }
+
+    #[test]
+    fn test_part2_sample_1() {
+        let input = include_str!("sample-input-part2-1.txt");
+        let parsed_input = parse_input(&input);
+
+        assert_eq!(solve(&parsed_input).1, 1);
+    }
+
+    #[test]
+    fn test_part2_sample_2() {
+        let input = include_str!("sample-input-part2-2.txt");
+        let parsed_input = parse_input(input);
+
+        assert_eq!(solve(&parsed_input).1, 9);
     }
 }
