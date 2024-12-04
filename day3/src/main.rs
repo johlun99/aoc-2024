@@ -8,7 +8,8 @@ fn main() {
     let parsed_input = parse_input(&input);
     let conditional_input = parse_conditional(&input);
 
-    println!("\n===================");
+    println!("\nDay 3");
+    println!("===================");
     println!("Part 1: {}", calculate(parsed_input));
     println!("Part 2: {}", calculate(conditional_input));
     println!("===================");

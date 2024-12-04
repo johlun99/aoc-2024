@@ -7,7 +7,8 @@ fn main() {
 
     let now = Instant::now();
 
-    println!("\n=================");
+    println!("\nDay 2");
+    println!("=================");
     println!("Part1: {}", part1(&parsed_input));
     println!("Elapsed: {:.2?}", now.elapsed());
     println!("=================");
@@ -103,27 +104,30 @@ mod tests {
     use super::*;
 
     /*
-7 6 4 2 1
-1 2 7 8 9
-9 7 6 2 1
-1 3 2 4 5
-8 6 4 4 1
-1 3 6 7 9 
+    7 6 4 2 1
+    1 2 7 8 9
+    9 7 6 2 1
+    1 3 2 4 5
+    8 6 4 4 1
+    1 3 6 7 9
 
-     */
+         */
     #[test]
     fn test_parse_input() {
         let input = include_str!("sample-input.txt");
         let parsed_input = parse_input(input.to_string());
 
-        assert_eq!(parsed_input, vec![
-            vec![7, 6, 4, 2, 1],
-            vec![1, 2, 7, 8, 9],
-            vec![9, 7, 6, 2, 1],
-            vec![1, 3, 2, 4, 5],
-            vec![8, 6, 4, 4, 1],
-            vec![1, 3, 6, 7, 9],
-        ]);
+        assert_eq!(
+            parsed_input,
+            vec![
+                vec![7, 6, 4, 2, 1],
+                vec![1, 2, 7, 8, 9],
+                vec![9, 7, 6, 2, 1],
+                vec![1, 3, 2, 4, 5],
+                vec![8, 6, 4, 4, 1],
+                vec![1, 3, 6, 7, 9],
+            ]
+        );
     }
 
     #[test]
