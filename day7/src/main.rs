@@ -1,17 +1,29 @@
 fn main() {
+    use std::time::Instant;
+    let now_total = Instant::now();
+
     let input = include_str!("input.txt");
     let parsed_input = parse_input(input);
 
-    println!("Part 1: {}", part1(&parsed_input));
+    println!("\nDay 7");
+    println!("=======================");
+    let now_p = Instant::now();
+    println!("Part 1: {}", solve(&parsed_input, false));
+    println!("Elapsed: {:.2?}\n", now_p.elapsed());
+
+    let now_p = Instant::now();
+    println!("Part 2: {}", solve(&parsed_input, true));
+    println!("Elapsed: {:.2?}", now_p.elapsed());
+    println!("=======================");
+    println!("Elapsed: {:.2?}\n", now_total.elapsed());
 }
 
-fn part1(input: &Vec<(u64, Vec<u64>)>) -> u64 {
+fn solve(input: &Vec<(u64, Vec<u64>)>, part2: bool) -> u64 {
     let mut found_combinations = Vec::new();
     let mut total = 0;
 
-    println!("\n\n");
     for (answer, values) in input {
-        let mut combinations = find_combinations(answer, values);
+        let mut combinations = find_combinations(answer, values, part2);
 
         let len = combinations.len();
         if len > 0 {
@@ -24,51 +36,43 @@ fn part1(input: &Vec<(u64, Vec<u64>)>) -> u64 {
     total
 }
 
-/*
-fn eval_left_to_right(equation: &str) -> u32 {
-    let mut parts = equation.split_whitespace();
-    let mut total = parts
-        .next()
-        .expect("Equation cannot be empty")
-        .parse::<i32>()
-        .expect("Invalid number");
-
-    while let Some(operator) = parts.next() {
-        if let Some(next_value) = parts.next() {
-            let value = next_value.parse::<i32>().expect("Invalid number");
-
-            match operator {
-                "+" => total += value,
-                "*" => total *= value,
-                _ => panic!("Unsupported operator: {}", operator),
-            }
-        } else {
-            panic!("Incomplete equation: Missing value after operation");
-        }
-    }
-
-    total as u32
-}
-*
-*/
-
-fn find_combinations(answer: &u64, values: &Vec<u64>) -> Vec<String> {
+fn find_combinations(answer: &u64, values: &Vec<u64>, include_join: bool) -> Vec<String> {
     let len = values.len();
     let mut found = Vec::new();
 
-    for bm in 0..(1 << (len - 1)) {
+    let operators: i32 = if include_join { 3 } else { 2 };
+
+    for bm in 0..(operators.pow((len - 1) as u32)) {
         let mut current = values[0];
         let mut exp = values[0].to_string();
+        let mut mask = bm;
 
         for i in 0..(len - 1) {
-            if (bm & (1 << i)) != 0 {
-                // + operator
-                current += values[i + 1];
-                exp.push_str(&format!(" + {}", values[i + 1]));
-            } else {
-                // * operator
-                current *= values[i + 1];
-                exp.push_str(&format!(" * {}", values[i + 1]));
+            // 0: +, 1: *, 2: ||
+            let operator = mask % operators;
+            mask /= operators;
+
+            match operator {
+                0 => {
+                    // +
+                    current += values[i + 1];
+                    exp.push_str(&format!(" + {}", values[i + 1]));
+                }
+                1 => {
+                    // *
+                    current *= values[i + 1];
+                    exp.push_str(&format!(" * {}", values[i + 1]));
+                }
+                2 => {
+                    // join(||)
+                    let j = format!("{}{}", current, values[i + 1])
+                        .parse::<u64>()
+                        .expect("Invalid joined value");
+
+                    current = j;
+                    exp.push_str(&format!(" || {}", values [i + 1]));
+                }
+                _ => panic!("Should be impossible o.O"),
             }
         }
 
@@ -131,10 +135,32 @@ mod tests {
     }
 
     #[test]
+    fn test_find_combinations_part1() {
+        assert_eq!(find_combinations(&190, &vec![10, 19], false), vec!["10 * 19"]);
+        assert_eq!(find_combinations(&3267, &vec![81, 40, 27], false), vec!["81 * 40 + 27", "81 + 40 * 27"]);
+        assert_eq!(find_combinations(&292, &vec![11, 6, 16, 20], false), vec!["11 + 6 * 16 + 20"]);
+    }
+
+    #[test]
     fn test_part1() {
         let input = include_str!("sample-input.txt");
         let parsed_input = parse_input(input);
 
-        assert_eq!(part1(&parsed_input), 3749);
+        assert_eq!(solve(&parsed_input, false), 3749);
+    }
+
+    #[test]
+    fn test_find_combinations_part2() {
+        assert_eq!(find_combinations(&156, &vec![15, 6], true), vec!["15 || 6"]);
+        assert_eq!(find_combinations(&7290, &vec![6, 8, 6, 15], true), vec!["6 * 8 || 6 * 15"]);
+        assert_eq!(find_combinations(&192, &vec![17, 8, 14], true), vec!["17 || 8 + 14"]);
+    }
+
+    #[test]
+    fn test_part2() {
+        let input = include_str!("sample-input.txt");
+        let parsed_input = parse_input(input);
+
+        assert_eq!(solve(&parsed_input, true), 11387);
     }
 }
