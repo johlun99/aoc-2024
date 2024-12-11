@@ -28,7 +28,7 @@ fn parse_input(input: &str) -> Vec<u64> {
 }
 
 fn rearrange_row(row: &Vec<u64>) -> Vec<u64> {
-    let mut output: Vec<u64> = Vec::with_capacity(row.len() * 1);
+    let mut output: Vec<u64> = Vec::with_capacity(row.len() * 2);
 
     for num in row {
         if *num == 0 {

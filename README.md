@@ -1,8 +1,10 @@
 # aoc-2024 - My attempt at a rusty aoc
 
 ### Stats
-      --------Part 1--------   --------Part 2--------
-    Day       Time   Rank  Score       Time   Rank  Score
+      --------Part 1----------   --------Part 2--------
+    Day Time      Rank     Score Time      Rank     Score
+    11  05:54:58  26663      0          -      -      -
+    9   11:35:48  33967      0          -      -      -
     7   09:13:51  32692      0   09:28:24  30207      0
     6   01:31:07  12584      0   07:48:36  20493      0
     4   05:54:43  35459      0   06:20:16  30855      0
