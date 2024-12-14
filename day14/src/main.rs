@@ -53,13 +53,18 @@ fn main() {
     let input = parse_input(input);
 
     println!("Part 1: {}", part1(input.clone(), 100));
+    // Chagnge seconds to 7610 to get answer for part 2
 }
 
 fn part1(mut guards: Vec<Guard>, seconds: u32) -> u64 {
-    for _s in 0..seconds {
+    for s in 0..seconds {
         for g in &mut guards {
             g.take_step();
         }
+
+        println!("S: {}", s);
+        print_guards(&guards);
+        println!();
     }
 
     let q_guard = get_guards_in_quadrents(&guards);
@@ -93,16 +98,30 @@ fn get_guards_in_quadrents(guards: &Vec<Guard>) -> Vec<u64> {
         } else if g.x > mid_x && g.y < mid_y {
             count_q2 += 1;
         } else if g.x < mid_x && g.y > mid_y {
-            println!("Q4 X: {} Y: {}", g.x, g.y);
             count_q3 += 1;
         } else if g.x > mid_x && g.y > mid_y {
             count_q4 += 1;
-        } else {
-            println!("Found X: {} Y: {}", g.x, g.y);
         }
     }
 
     vec![count_q1, count_q2, count_q3, count_q4]
+}
+
+fn print_guards(guards: &[Guard]) {
+    for y in 0..HEIGHT {
+        for x in 0..WIDTH {
+            if is_guard_at_pos(guards, x, y) {
+                print!("X");
+            } else {
+                print!(".");
+            }
+        }
+        println!();
+    }
+}
+
+fn is_guard_at_pos(guards: &[Guard], x: i64, y: i64) -> bool {
+    guards.iter().any(|guard| guard.x == x && guard.y == y)
 }
 
 fn parse_input(input: &str) -> Vec<Guard> {
@@ -205,9 +224,6 @@ mod tests {
     fn test_part1() {
         let input = include_str!("sample-input.txt");
         let input = parse_input(input);
-
-        dbg!(WIDTH);
-        dbg!(HEIGHT);
 
         assert_eq!(part1(input.clone(), 100), 12);
     }
